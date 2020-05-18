@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+
+exec \
+    /usr/local/bin/tailscaled --state=/config/tailscaled.state
