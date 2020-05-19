@@ -14,11 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Publish Docker Image to GPR
-      uses: machine-learning-apps/gpr-docker-publish@master
+    - uses: docker/build-push-action@v1
       with:
-        IMAGE_NAME: 'tailscale'
-        TAG: 'lastest'
-        BUILD_CONTEXT: '.'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: dknaack/unraid-tailscale
+        tags: latest
+
