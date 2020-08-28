@@ -7,12 +7,8 @@ FROM alpine AS builder
 WORKDIR /go/src/tailscale
 
 RUN apk add --no-cache bash curl ca-certificates jq
-RUN TAGS=$(curl -ssfL \
-    "https://api.github.com/repos/tailscale/tailscale/tags" \
-    | jq -r '.[] | .name' | sed 's/^v//' | sort -r); \
-    for tag in $TAGS; do \
-        curl -fLo /tmp/tailscale-src.tar.gz "https://pkgs.tailscale.com/stable/tailscale_${tag}_amd64.tgz" && break; \
-    done; \
+RUN URL="https://pkgs.tailscale.com/stable/$(curl -fssL https://pkgs.tailscale.com/stable/ | grep amd64.tgz | cut -f2 -d\")" && \
+    curl -fLo /tmp/tailscale-src.tar.gz "$URL" && \
     mkdir -p /tmp/tailscale && \
     tar xvf /tmp/tailscale-src.tar.gz -C /tmp/tailscale --strip-components=1
 
