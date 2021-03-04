@@ -12,7 +12,7 @@ RUN URL="https://pkgs.tailscale.com/stable/$(curl -fssL https://pkgs.tailscale.c
     mkdir -p /tmp/tailscale && \
     tar xvf /tmp/tailscale-src.tar.gz -C /tmp/tailscale --strip-components=1
 
-FROM lsiobase/alpine:latest
+FROM ghcr.io/linuxserver/baseimage-alpine:latest
 RUN apk add --no-cache ca-certificates iptables iproute2 tzdata
 COPY --from=builder /tmp/tailscale/tailscale /tmp/tailscale/tailscaled /usr/local/bin/
 COPY ./root /
