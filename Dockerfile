@@ -2,7 +2,7 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-FROM alpine:3.13 AS builder
+FROM alpine AS builder
 
 WORKDIR /go/src/tailscale
 
@@ -12,9 +12,11 @@ RUN URL="https://pkgs.tailscale.com/stable/$(curl -fssL https://pkgs.tailscale.c
     mkdir -p /tmp/tailscale && \
     tar xvf /tmp/tailscale-src.tar.gz -C /tmp/tailscale --strip-components=1
 
-FROM ghcr.io/linuxserver/baseimage-alpine:3.13
-RUN apk add --no-cache ca-certificates iptables iproute2 tzdata
+FROM alpine
+RUN apk add --no-cache ca-certificates iptables iproute2 tzdata dumb-init
 COPY --from=builder /tmp/tailscale/tailscale /tmp/tailscale/tailscaled /usr/local/bin/
-COPY ./root /
+COPY ./entry.sh /usr/local/bin/entry.sh
 
 VOLUME /config
+
+CMD [ "/usr/local/bin/entry.sh" ]
