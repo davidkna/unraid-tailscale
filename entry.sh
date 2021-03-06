@@ -8,4 +8,4 @@ if [ ! -c /dev/net/tun ]; then
 fi
 
 exec \
-    /usr/local/bin/tailscaled --help --state=/config/tailscaled.state
+    /usr/local/bin/tailscaled --state=/config/tailscaled.state
